@@ -1,0 +1,30 @@
+{
+  "name": "isum",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "./index.js",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "browser": "./browser.js",
+      "default": "./index.js"
+    },
+    "./no-css": "./no-css.js"
+  },
+  "files": [
+    "browser.js",
+    "index.d.ts",
+    "index.js",
+    "no-css.js"
+  ],
+  "dependencies": {
+    "uhtml": "^4.7.1"
+  },
+  "author": "Lars Kappert <lars@webpro.nl>",
+  "license": "ISC",
+  "description": "isomorphic uhtml",
+  "keywords": [
+    "isomorphic",
+    "uhtml"
+  ]
+}
