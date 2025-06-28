@@ -26,5 +26,8 @@
   "keywords": [
     "isomorphic",
     "uhtml"
-  ]
+  ],
+  "repository": "webpro/isum",
+  "homepage": "https://github.com/webpro/isum",
+  "bugs": "https://github.com/webpro/isum/issues"
 }

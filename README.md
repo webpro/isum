@@ -1,12 +1,13 @@
 # isum
 
-isomorphic [uhtml](https://github.com/WebReflection/uhtml)
+isomorphic [µhtml](https://github.com/WebReflection/uhtml)
 
 Tiny wrapper that imports `uhtml` in the browser and `uhtml/ssr` in Node.js/Bun
-for quick & easy client and server-side rendering (SSR/SSG).
+for quick & easy client and server-side rendering (SSR/SSG). With a few extra
+niceties.
 
 All credits to [Andrea Giammarchi](https://github.com/WebReflection) for
-creating this little mighty lib.
+creating this mighty lib.
 
 ## App
 
@@ -20,17 +21,20 @@ export class App {
     this.render();
   }
 
-  handleEvent(event) {
+  handleClick(event) {
     console.log(event);
   }
 
   render() {
-    const view = html`<button @click=${this.handleEvent}>Hello!</button>`;
+    const view = html`<button @click=${this.handleClick}>Hello!</button>`;
 
     render(document.getElementById('app'), view);
   }
 }
 ```
+
+Please refer to [the µhtml docs](https://webreflection.github.io/uhtml/) for
+details.
 
 ## Client-side
 
@@ -79,7 +83,7 @@ writeFileSync('index.html', document.toString());
 
 This renders the `<button>` inside `<main>`.
 
-## Look ma, no bundler
+## Look ma, no bundler!
 
 Run the app in the browser without a build step:
 
