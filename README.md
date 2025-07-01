@@ -9,6 +9,8 @@ niceties.
 All credits to [Andrea Giammarchi](https://github.com/WebReflection) for
 creating this mighty lib.
 
+Example project using isum: [ANSI.tools](https://github.com/webpro/ANSI.tools)
+
 ## App
 
 This runs in both browsers and runtimes like Node.js:
@@ -82,6 +84,9 @@ writeFileSync('index.html', document.toString());
 ```
 
 This renders the `<button>` inside `<main>`.
+
+This should scale well due to ESM live bindings. Here's an example
+[build script](https://github.com/webpro/ANSI.tools/blob/main/scripts/build.ts).
 
 ## Look ma, no bundler!
 
