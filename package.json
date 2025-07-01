@@ -1,6 +1,6 @@
 {
   "name": "isum",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "module",
   "main": "./index.js",
   "types": "./index.d.ts",
@@ -9,15 +9,32 @@
       "browser": "./browser.js",
       "default": "./index.js"
     },
+    "./reactive": {
+      "types": "./reactive.d.ts",
+      "browser": "./browser-reactive.js",
+      "default": "./index-reactive.js"
+    },
+    "./preactive": {
+      "types": "./preactive.d.ts",
+      "browser": "./browser-preactive.js",
+      "default": "./index-preactive.js"
+    },
     "./no-css": "./no-css.js"
   },
   "files": [
     "browser.js",
-    "index.d.ts",
+    "browser-reactive.js",
+    "browser-preactive.js",
     "index.js",
+    "index-reactive.js",
+    "index-preactive.js",
+    "index.d.ts",
+    "reactive.d.ts",
+    "preactive.d.ts",
     "no-css.js"
   ],
   "dependencies": {
+    "@preact/signals-core": "^1.11.0",
     "uhtml": "^4.7.1"
   },
   "author": "Lars Kappert <lars@webpro.nl>",

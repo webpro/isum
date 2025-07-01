@@ -1,15 +1,23 @@
 # isum
 
-isomorphic [µhtml](https://github.com/WebReflection/uhtml)
+isomorphic [µhtml][1]
 
 Tiny wrapper that imports `uhtml` in the browser and `uhtml/ssr` in Node.js/Bun
 for quick & easy client and server-side rendering (SSR/SSG). With a few extra
 niceties.
 
-All credits to [Andrea Giammarchi](https://github.com/WebReflection) for
-creating this mighty lib.
+All credits to [Andrea Giammarchi][2] for creating this mighty lib.
 
-Example project using isum: [ANSI.tools](https://github.com/webpro/ANSI.tools)
+Example project using isum: [ANSI.tools][3]
+
+## The Main Idea™
+
+- Plain and web standards-based JS library, i.e. not a (meta) framework
+- Use `render` and `html` to render template literals
+- Optional: use fine-grained reactivity with `isum/preactive`
+
+Use the provided `document` of `isum` and Vite (or something else that
+builds/bundles) and get SSG for free.
 
 ## App
 
@@ -35,8 +43,34 @@ export class App {
 }
 ```
 
-Please refer to [the µhtml docs](https://webreflection.github.io/uhtml/) for
-details.
+Please refer to [the µhtml docs][4] for details.
+
+## Reactivity with Signals
+
+_Introduced in v1.1.0_
+
+Import the same from `isum/preactive` and get fine-grained reactivity for free:
+
+```ts
+import { document, render } from 'isum/preactive';
+
+const count = signal(0);
+
+export function renderApp() {
+  render(
+    document.body,
+    // second argument must be a function
+    () =>
+      html`<button onclick=${() => count.value++}>
+        Clicks: ${count.value}
+      </button>`
+  );
+}
+```
+
+This will render the initial values during SSG.
+
+Please refer to the [the µhtml docs][5] for details.
 
 ## Client-side
 
@@ -71,22 +105,24 @@ Read template, render application, write result:
 
 ```ts
 import { readFileSync, writeFileSync } from 'node:fs';
-import initSSR from 'isum';
-import { App } from './app.js';
+import initSSR from 'isum'; // must import same as in rest of app (e.g. 'isum/preactive')
+import { renderApp } from './app.js';
 
-const template = readFileSync('index.html', 'utf-8');
+const pages = {
+  'index.html': () => renderApp()
+};
 
-const { document } = initSSR(template);
-
-new App();
-
-writeFileSync('index.html', document.toString());
+for (const [filePath, render] of Object.entries(pages)) {
+  const template = readFileSync(filePath, 'utf-8');
+  const { document } = init(template);
+  render();
+  writeFileSync(filePath, document.toString());
+}
 ```
 
 This renders the `<button>` inside `<main>`.
 
-This should scale well due to ESM live bindings. Here's an example
-[build script](https://github.com/webpro/ANSI.tools/blob/main/scripts/build.ts).
+This should scale well due to ESM live bindings.
 
 ## Look ma, no bundler!
 
@@ -123,3 +159,9 @@ node --import isum/no-css build.js
 ```
 
 Useful when using e.g. Vite. isum pairs great with Vite.
+
+[1]: https://github.com/WebReflection/uhtml
+[2]: https://github.com/WebReflection
+[3]: https://github.com/webpro/ANSI.tools
+[4]: https://webreflection.github.io/uhtml/
+[5]: https://webreflection.github.io/uhtml/#reactivity
