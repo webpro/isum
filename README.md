@@ -19,70 +19,35 @@ Example project using isum: [ANSI.tools][3]
 Use the provided `document` of `isum` and Vite (or something else that
 builds/bundles) and get SSG for free.
 
-## App
-
-This runs in both browsers and runtimes like Node.js:
+Import the same from `isum/preactive` for fine-grained reactivity:
 
 ```ts
-import { document, html, render } from 'isum';
-
-export class App {
-  constructor() {
-    this.render();
-  }
-
-  handleClick(event) {
-    console.log(event);
-  }
-
-  render() {
-    const view = html`<button @click=${this.handleClick}>Hello!</button>`;
-
-    render(document.getElementById('app'), view);
-  }
-}
-```
-
-Please refer to [the µhtml docs][4] for details.
-
-## Reactivity with Signals
-
-_Introduced in v1.1.0_
-
-Import the same from `isum/preactive` and get fine-grained reactivity for free:
-
-```ts
-import { document, render } from 'isum/preactive';
+import { document, render, signal } from 'isum/preactive';
 
 const count = signal(0);
 
-export function renderApp() {
-  render(
-    document.body,
-    // second argument must be a function
-    () =>
-      html`<button onclick=${() => count.value++}>
-        Clicks: ${count.value}
-      </button>`
-  );
+function App {
+  return () => html`<button onclick=${() => count.value++}>Clicks: ${count.value}</button>`;
+}
+
+function renderApp() {
+  render(document.getElementById("app"), App());
 }
 ```
 
-This will render the initial values during SSG.
+This runs in both browsers and runtimes like Node.js.
 
-Please refer to the [the µhtml docs][5] for details.
+Please refer to [the µhtml docs][4] for details.
 
-## Client-side
+## Setup
 
 Bootstrap in `index.js`:
 
 ```ts
-import { App } from './app.ts';
+import { renderApp } from './app.js';
 
-new App();
+renderApp();
 ```
-
-## Browser
 
 Initial template/container `index.html`:
 
@@ -114,15 +79,13 @@ const pages = {
 
 for (const [filePath, render] of Object.entries(pages)) {
   const template = readFileSync(filePath, 'utf-8');
-  const { document } = init(template);
+  const { document } = initSSR(template);
   render();
   writeFileSync(filePath, document.toString());
 }
 ```
 
-This renders the `<button>` inside `<main>`.
-
-This should scale well due to ESM live bindings.
+This renders the `<button>` inside `<main>` into `index.html`.
 
 ## Look ma, no bundler!
 
@@ -136,8 +99,7 @@ Run the app in the browser without a build step:
     <script type="importmap">
       {
         "imports": {
-          "isum": "https://unpkg.com/isum@1.0.0/browser.js",
-          "udomdiff": "https://unpkg.com/udomdiff@1.1.2/min.js",
+          "isum": "https://unpkg.com/isum@1.1.0",
           "uhtml": "https://unpkg.com/uhtml@4.7.1/keyed.js"
         }
       }
@@ -152,7 +114,7 @@ Run the app in the browser without a build step:
 
 ## CSS imports?
 
-Ignore any CSS imports in JS modules:
+Ignore CSS imports in JS modules during SSG:
 
 ```sh
 node --import isum/no-css build.js
@@ -160,8 +122,20 @@ node --import isum/no-css build.js
 
 Useful when using e.g. Vite. isum pairs great with Vite.
 
+## Examples
+
+- Bare: [./examples/bare/][5] → [CodeSandbox][6]
+- SSG: [./examples/ssg/][7] → [CodeSandbox][8]
+- Vite: [./examples/vite/][9] → [CodeSandbox][10]
+
 [1]: https://github.com/WebReflection/uhtml
 [2]: https://github.com/WebReflection
 [3]: https://github.com/webpro/ANSI.tools
 [4]: https://webreflection.github.io/uhtml/
-[5]: https://webreflection.github.io/uhtml/#reactivity
+[5]: ./examples/bare
+[6]: https://codesandbox.io/p/sandbox/github/webpro/isum/tree/main/examples/bare
+[7]: ./examples/ssg
+[8]: https://codesandbox.io/p/sandbox/github/webpro/isum/tree/main/examples/ssg
+[9]: ./examples/vite
+[10]:
+  https://codesandbox.io/p/sandbox/github/webpro/isum/tree/main/examples/vite

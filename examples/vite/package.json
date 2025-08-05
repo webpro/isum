@@ -1,0 +1,18 @@
+{
+  "name": "isum-examples-vite",
+  "version": "0.0.0",
+  "private": true,
+  "main": "index.js",
+  "type": "module",
+  "license": "ISC",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && node --import isum/no-css build.js"
+  },
+  "dependencies": {
+    "isum": "^1.1.0"
+  },
+  "devDependencies": {
+    "vite": "^7.0.6"
+  }
+}

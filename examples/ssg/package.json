@@ -1,0 +1,14 @@
+{
+  "name": "isum-examples-ssg",
+  "version": "0.0.0",
+  "private": true,
+  "main": "index.js",
+  "type": "module",
+  "license": "ISC",
+  "scripts": {
+    "build": "node build.js"
+  },
+  "dependencies": {
+    "isum": "^1.1.0"
+  }
+}
